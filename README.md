@@ -42,18 +42,31 @@ The `docker-compose.yaml` file defines several services. Here's how to run the k
 
 To populate the search indexes with sample data:
 
-```bash
-docker compose up ingest-data
-```
+*   **For Redis:**
+    ```bash
+    docker compose up ingest-data-redis
+    ```
+
+*   **For Azure AI Search:**
+    ```bash
+    docker compose up ingest-data-azureai
+    ```
+
 This command will execute the `ingest-data` service, which is responsible for loading and indexing data into both Redis and Azure AI Search.
 
 #### 2. Remove Data 🗑️
 
 To clear all data from the search indexes:
 
-```bash
-docker compose up remove-data
-```
+*   **For Redis:**
+    ```bash
+    docker compose up remove-data-redis
+    ```
+
+*   **For Azure AI Search:**
+    ```bash
+    docker compose up remove-data-azureai
+    ```
 This command will execute the `remove-data` service, which will delete the indexed data from both systems.
 
 #### 3. Query Data 🔍
