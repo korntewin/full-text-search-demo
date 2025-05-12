@@ -3,7 +3,7 @@ import csv
 import redis.exceptions
 import redisearch as rs
 
-from src import config
+from src.redis import config
 
 
 def create_index(client: rs.Client):

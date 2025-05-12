@@ -3,7 +3,7 @@ import argparse
 import redis.exceptions
 import redisearch as rs
 
-from src import config
+from src.redis import config
 
 
 def search_redis(query_string: str):

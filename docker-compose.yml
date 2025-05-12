@@ -21,7 +21,7 @@ services:
     env_file:
       - .env 
     command: >
-      uv run src/ingest_data.py
+      uv run src/redis/ingest_data.py
 
   remove-data:
     depends_on:
@@ -33,7 +33,7 @@ services:
     env_file:
       - .env 
     command: >
-      uv run src/remove_data.py
+      uv run src/redis/remove_data.py
 
   query:
     depends_on:
@@ -45,4 +45,4 @@ services:
     env_file:
       - .env
     command: >
-      uv run src/main.py "$QUERY_STRING"
+      uv run src/redis/main.py "$QUERY_STRING"

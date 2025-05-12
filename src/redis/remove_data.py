@@ -2,7 +2,7 @@
 import redis.exceptions
 import redisearch as rs
 
-from src import ingest_data, config
+from src.redis import ingest_data, config
 
 def remove_all_data(client: rs.Client):
     """Removes all documents from the search index by dropping and recreating it."""
