@@ -31,7 +31,7 @@ def search_redis(query_string: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Search for funds in Redis.")
+    parser = argparse.ArgumentParser(description="Search for animals in Redis.")
     parser.add_argument("query", type=str, help="The search query string.")
 
     args = parser.parse_args()
