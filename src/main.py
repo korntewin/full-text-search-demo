@@ -12,6 +12,7 @@ def search_redis(query_string: str):
 
     # Create a query object
     query = rs.Query(query_string)
+    print(f"query_string: {query_string}")
 
     try:
         # Execute the search query
