@@ -3,11 +3,7 @@ import csv
 import redis.exceptions
 import redisearch as rs
 
-# Redis connection details
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-INDEX_NAME = "fund_index"
-DOCUMENT_PREFIX = "fund:"
+from src import config
 
 
 def create_index(client: rs.Client):
@@ -17,12 +13,12 @@ def create_index(client: rs.Client):
         print("Index already exists.")
     except redis.exceptions.ResponseError:
         schema = (rs.TextField("name", weight=5.0, sortable=True), rs.TextField("details"))
-        definition = rs.IndexDefinition(prefix=[DOCUMENT_PREFIX])
+        definition = rs.IndexDefinition(prefix=[config.DOCUMENT_PREFIX])
         client.create_index(fields=schema, definition=definition)
         print("Index created successfully.")
 
 
-def ingest_data(client: rs.Client, csv_file_path: str ="data.csv"):
+def ingest_data(client: rs.Client, csv_file_path: str ="data/data.csv"):
     """Ingests data from a CSV file into Redis."""
     with open(csv_file_path, mode="r", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
@@ -32,7 +28,7 @@ def ingest_data(client: rs.Client, csv_file_path: str ="data.csv"):
         count = 0
         for i, row in enumerate(reader):
             if len(row) == 2:
-                doc_id = f"{DOCUMENT_PREFIX}{i}"
+                doc_id = f"{config.DOCUMENT_PREFIX}{i}"
                 name_thai = row[0]
                 details = row[1]
 
@@ -46,16 +42,16 @@ def ingest_data(client: rs.Client, csv_file_path: str ="data.csv"):
 
 if __name__ == "__main__":
     # Initialize Redis client for RediSearch
-    search_client = rs.Client(INDEX_NAME, host=REDIS_HOST, port=REDIS_PORT)
+    search_client = rs.Client(config.INDEX_NAME, host=config.REDIS_HOST, port=config.REDIS_PORT)
 
     create_index(search_client)
     ingest_data(search_client)
     print("Data ingestion complete.")
 
     # try:
-    #     query = Query("กองทุนเปิด")
+    #     query = Query("แมว")
     #     result = search_client.search(query)
-    #     print(f"Found {result.total} results for 'กองทุนเปิด':")
+    #     print(f"Found {result.total} results for 'animal':")
     #     for doc in result.docs:
     #         print(f"  ID: {doc.id}, Name: {doc.name}, Details: {doc.details}")
     # except Exception as e:

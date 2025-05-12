@@ -5,3 +5,32 @@ services:
       - "6379:6379"
     volumes:
       - ./.tmp/redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  ingest-data:
+    depends_on:
+      redis:
+        condition: service_healthy
+    build: .
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env 
+    command: >
+      uv run src/ingest_data.py
+
+  remove-data:
+    depends_on:
+      redis:
+        condition: service_healthy
+    build: .
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env 
+    command: >
+      uv run src/remove_data.py

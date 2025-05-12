@@ -3,15 +3,12 @@ import argparse
 import redis.exceptions
 import redisearch as rs
 
-# Redis connection details
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-INDEX_NAME = "fund_index"
+from src import config
 
 
 def search_redis(query_string: str):
     """Searches Redis using the given query string."""
-    client = rs.Client(INDEX_NAME, host=REDIS_HOST, port=REDIS_PORT)
+    client = rs.Client(config.INDEX_NAME, host=config.REDIS_HOST, port=config.REDIS_PORT)
 
     # Create a query object
     query = rs.Query(query_string)
