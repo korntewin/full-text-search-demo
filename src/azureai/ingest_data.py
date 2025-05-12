@@ -30,8 +30,8 @@ def create_or_update_index(index_name: str):
     index_client = get_search_index_client()
     fields = [
         models.SimpleField(name="id", type=models.SearchFieldDataType.String, key=True, filterable=True),
-        models.SearchableField(name="th_title", type=models.SearchFieldDataType.String, searchable=True, analyzer_name="th.microsoft", sortable=True),
-        models.SearchableField(name="en_title", type=models.SearchFieldDataType.String, searchable=True, sortable=True),
+        models.SearchableField(name="TH_Name", type=models.SearchFieldDataType.String, searchable=True, analyzer_name="th.microsoft", sortable=True),
+        models.SearchableField(name="EN_Name", type=models.SearchFieldDataType.String, searchable=True, sortable=True),
     ]
     index = models.SearchIndex(name=index_name, fields=fields)
     try:
@@ -70,8 +70,8 @@ if __name__ == "__main__":
         for _id, row in enumerate(reader):
             document = {
                 "id": f"{config.DOCUMENT_PREFIX}{_id}",
-                "th_title": row["th_title"],
-                "en_title": row["en_title"],
+                "TH_Name": row["TH_Name"],
+                "EN_Name": row["EN_Name"],
             }
             documents_to_ingest.append(document)
     print(f"Loaded {len(documents_to_ingest)} documents from CSV.")

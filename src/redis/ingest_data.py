@@ -12,7 +12,7 @@ def create_index(client: rs.Client):
         client.info()
         print("Index already exists.")
     except redis.exceptions.ResponseError:
-        schema = (rs.TextField("name", weight=5.0, sortable=True), rs.TextField("details"))
+        schema = (rs.TextField("TH_Name", weight=5.0, sortable=True), rs.TextField("EN_Name"))
         definition = rs.IndexDefinition(prefix=[config.DOCUMENT_PREFIX])
         client.create_index(fields=schema, definition=definition)
         print("Index created successfully.")
@@ -21,7 +21,7 @@ def create_index(client: rs.Client):
 def ingest_data(client: rs.Client, csv_file_path: str ="data/data.csv"):
     """Ingests data from a CSV file into Redis."""
     with open(csv_file_path, mode="r", encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile)
+        reader = csv.DictReader(csvfile)
         header = next(reader)  # Skip header row
         print(f"CSV Header: {header}")
 
@@ -29,11 +29,11 @@ def ingest_data(client: rs.Client, csv_file_path: str ="data/data.csv"):
         for i, row in enumerate(reader):
             if len(row) == 2:
                 doc_id = f"{config.DOCUMENT_PREFIX}{i}"
-                name_thai = row[0]
-                details = row[1]
+                name_thai = row["TH_Name"]
+                details = row["EN_Name"]
 
                 # Add document to Redis
-                client.add_document(doc_id, name=name_thai, details=details)
+                client.add_document(doc_id, TH_Name=name_thai, EN_Name=details)
                 count += 1
             else:
                 print(f"Skipping row {i+1} due to incorrect number of columns: {row}")

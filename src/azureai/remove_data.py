@@ -19,7 +19,6 @@ def delete_and_recreate_index(index_name: str = config.INDEX_NAME):
 
     try:
         print(f"Attempting to create index '{index_name}'...")
-        search_index_client.create_index(index=index_name)
         ingest_data.create_or_update_index(index_name)
         print(f"Index '{index_name}' created successfully with the new schema.")
     except Exception as e:

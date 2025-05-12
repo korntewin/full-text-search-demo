@@ -11,6 +11,7 @@ def search_azureai(search_text: str, top: int = 5):
         documents_found = []
         for result in results:
             documents_found.append(result)
+            print(f"Document ID: {result['id']} - TH Name: {result['TH_Name']} - EN Name: {result['EN_Name']}")
         print(f"Found {len(documents_found)} documents for query: '{search_text}'")
         return documents_found
     except Exception as e:

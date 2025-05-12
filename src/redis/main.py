@@ -20,9 +20,7 @@ def search_redis(query_string: str):
 
         print(f"Found {result.total} results for '{query_string}':")
         for doc in result.docs:
-            print(f"  ID: {doc.id}")
-            print(f"    Name: {doc.name}")
-            print(f"    Details: {doc.details}")
+            print(f"Document ID: {doc.id} - TH Name: {doc.name} - EN Name: {doc.details}")
 
     except redis.exceptions.ResponseError as e:
         print(f"Error executing search: {e}")
