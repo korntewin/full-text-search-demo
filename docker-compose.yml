@@ -11,7 +11,7 @@ services:
       timeout: 3s
       retries: 30
 
-  ingest-data:
+  ingest-data-redis:
     depends_on:
       redis:
         condition: service_healthy
@@ -23,19 +23,33 @@ services:
     command: >
       uv run src/redis/ingest_data.py
 
-  remove-data:
-    depends_on:
-      redis:
-        condition: service_healthy
+  ingest-data-azureai:
     build: .
     volumes:
       - ./data:/app/data
     env_file:
       - .env 
     command: >
+      uv run src/azureai/ingest_data.py
+
+  remove-data-redis:
+    depends_on:
+      redis:
+        condition: service_healthy
+    build: .
+    env_file:
+      - .env 
+    command: >
       uv run src/redis/remove_data.py
 
-  query:
+  remove-data-azureai:
+    build: .
+    env_file:
+      - .env 
+    command: >
+      uv run src/azureai/remove_data.py
+
+  query-redis:
     depends_on:
       redis:
         condition: service_healthy
@@ -46,3 +60,12 @@ services:
       - .env
     command: >
       uv run src/redis/main.py "$QUERY_STRING"
+
+  query-azureai:
+    build: .
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    command: >
+      uv run src/azureai/main.py "$QUERY_STRING"
